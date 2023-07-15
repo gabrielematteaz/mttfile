@@ -8,23 +8,24 @@ My personal C library to handle files stuff
 - mttfile_file_flags_t
 
 # Functions
-- mttfile_load
+- mttfile_load_file
 
 # Example
-This example takes at most 1000 bytes (As a string). "filesize" and "file.size" could be different depending on the actual size of the file ("file.cont" contains the actual number of bytes read)
 ```c
 #include "mttlib/mttfile/mttfile.h"
-#include <stdio.h>
 
 int main(void)
 {
-	struct mttfile_file_t file = { "test.c", .flags = CONT_AS_STR | RESIZE_CONT };
-	DWORD filesize = mttfile_load(&file, 0, 1000);
+	struct mttfile_file_t file = { "test.c", .flags = CONT_AS_STR };
+	size_t lim = mttfile_load_file(&file, 0, 1000);
 
-	if (filesize)
+	if (lim)
 	{
-		printf("%u %u\n%s", filesize, file.size, file.cont);
+		printf("%zu %zu\n", file.size, lim);
+		puts(file.cont);
 		free(file.cont);
 	}
+
+	return 0;
 }
 ```
