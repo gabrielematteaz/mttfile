@@ -1,11 +1,8 @@
 # mttfile
 My personal C library to handle files stuff
 
-# Structs
-- mttfile_file_t
-
 # Enums
-- mttfile_file_flags_t
+- mttfile_flags_t
 
 # Functions
 - mttfile_load_file
@@ -16,14 +13,14 @@ My personal C library to handle files stuff
 
 int main(void)
 {
-	struct mttfile_file_t file = { "test.c", .flags = CONT_AS_STR };
-	size_t lim = mttfile_load_file(&file, 0, 1000);
+	char *cont;
+	size_t lim = 0, size = mttfile_load_file("test2.c", &cont, 0, &lim, STRING);
 
-	if (lim)
+	if (size)
 	{
-		printf("%zu %zu\n", file.size, lim);
-		puts(file.cont);
-		free(file.cont);
+		printf("%zu %zu\n", size, lim);
+		puts(cont);
+		free(cont);
 	}
 
 	return 0;
