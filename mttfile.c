@@ -1,69 +1,69 @@
 #include "mttfile.h"
 
-size_t mttfile_load_file(struct mttfile_file_t *file, long off, size_t lim)
+size_t mttfile_load_file(const char *name, char **cont, long off, size_t *lim, enum mttfile_flags_t flags)
 {
-	FILE *f;
-	int flags;
-	size_t size;
-	char *cont;
+	FILE* file;
+	size_t l, size;
+	char *c;
 
-	if (file != NULL)
+	if (name != NULL && cont != NULL)
 	{
-		f = fopen(file->name, "rb");
+		file = fopen(name, "rb");
 
-		if (f != NULL)
+		if (file != NULL)
 		{
-			flags = file->flags;
+			l = lim == NULL ? 0 : *lim;
 
-			if (lim == 0)
+			if (l == 0)
 			{
-				fseek(f, 0, SEEK_END);
-				lim = ftell(f);
-				size = lim;
+				fseek(file, 0, SEEK_END);
+				l = ftell(file);
+				size = l;
 
-				if (flags & CONT_AS_STR) size++;
+				if (flags & STRING) size++;
 			}
 			else
 			{
-				size = lim;
+				size = l;
 
-				if (flags & CONT_AS_STR) lim--;
+				if (flags & STRING) l--;
 			}
 
-			if (fseek(f, off, SEEK_SET) == 0)
+			if (fseek(file, off, SEEK_SET) == 0)
 			{
-				cont = malloc(size);
+				c = malloc(size);
 
-				if (cont != NULL)
+				if (c != NULL)
 				{
-					lim = fread(cont, 1, lim, f);
+					l = fread(c, 1, l, file);
 
-					if (flags & CONT_AS_STR)
+					if (flags & STRING)
 					{
-						cont[lim] = 0;
+						c[l] = 0;
 
-						if (flags & RESIZE_CONT)
+						if (flags & RESIZE)
 						{
-							size = lim + 1;
-							cont = realloc(cont, size);
+							size = l + 1;
+							c = realloc(c, size);
 						}
 					}
-					else if (flags & RESIZE_CONT)
+					else if (flags & RESIZE)
 					{
-						size = lim;
-						cont = realloc(cont, size);
+						size = l;
+						c = realloc(c, size);
 					}
 
-					file->cont = cont;
-					file->size = size;
+					*cont = c;
+					
+					if (lim) *lim = l;
 
-					fclose(f);
+					fclose(file);
 
-					return lim;
+					return size;
 				}
 			}
 
-			fclose(f);
+			fclose(file);
 		}
 	}
 
