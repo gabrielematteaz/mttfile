@@ -16,7 +16,7 @@ size_t mttfile_load_file(char *name, char **cont, long off, size_t *lim, enum mt
 			{
 				l = *lim;
 
-				if (l == 0) goto entirefile;
+				if (l == 0) goto entire_file;
 
 				size = l;
 
@@ -24,7 +24,7 @@ size_t mttfile_load_file(char *name, char **cont, long off, size_t *lim, enum mt
 			}
 			else
 			{
-			entirefile:
+			entire_file:
 				fseek(file, 0, SEEK_END);
 				l = ftell(file);
 				size = l;
@@ -46,7 +46,7 @@ size_t mttfile_load_file(char *name, char **cont, long off, size_t *lim, enum mt
 
 						if (flags & RESIZE)
 						{
-							size + l + 1;
+							size = l + 1;
 							c = realloc(c, size);
 						}
 					}
