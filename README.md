@@ -1,27 +1,20 @@
 # mttfile
 My personal C library to handle files stuff
 
-# Enums
-- mttfile_flags_t
-
 # Functions
 - mttfile_load_file
 
 # Example
 ```c
-#include "mttlib/mttfile/mttfile.h"
+#include "mttfile.h"
 
 int main(void)
 {
-	char *cont;
-	size_t lim = 0, size = mttfile_load_file("test2.c", &cont, 0, &lim, STRING);
+	struct mttfile_cont_t cont = mttfile_load_file("test.c", 0, 0, 1);
 
-	if (size)
-	{
-		printf("%zu %zu\n", size, lim);
-		puts(cont);
-		free(cont);
-	}
+	if (cont.data == NULL) return 1;
+
+	puts(cont.data);
 
 	return 0;
 }
