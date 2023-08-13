@@ -4,14 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-enum mttfile_flags_t
+struct mttfile_cont_t
 {
-	VECTOR = 0,
-	STRING = 1,
-	DO_NOT_RESIZE = 0,
-	RESIZE = 2
+	char *data;
+	size_t size;
 };
 
-size_t mttfile_load_file(char *name, char **cont, long off, size_t *lim, enum mttfile_flags_t flags);
+struct mttfile_cont_t mttfile_load_file(const char *name, long off, size_t lim, int str);
 
 #endif
