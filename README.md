@@ -1,8 +1,12 @@
 # mttfile
 My personal C library to handle files stuff
 
+# Structs
+- mttfile_cont_t
+
 # Functions
 - mttfile_load_file
+- mttfile_load_wfile
 
 # Example
 ```c
