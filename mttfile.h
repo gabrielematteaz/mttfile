@@ -11,6 +11,5 @@ struct mttfile_cont_t
 };
 
 struct mttfile_cont_t mttfile_load_file(const char *name, long off, size_t lim, int str);
-struct mttfile_cont_t mttfile_load_wfile(const wchar_t *wname, long off, size_t lim, int str);
 
 #endif
